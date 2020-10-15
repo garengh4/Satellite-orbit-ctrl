@@ -38,9 +38,9 @@ u = ones(size(t)) *pi % input = 1 and scaled to pi
 u = [u ;u]';
 [y,t,x] = lsim(orbitsys, u, t, x0)
 plot(t,y) %theta (-ive input gives +ive direction)
-xlabel('time'); ylabel('theta')
+xlabel('time'); ylabel('theta');title('Satellite orbit angle');
 plot(t,x)
-xlabel('time');
+xlabel('time');ylabel('Altitude');title('Satellite orbit altitude');
 %plot the 4 different states in 4 graph
 
 %lsim(orbitsys, u, t, x0)
