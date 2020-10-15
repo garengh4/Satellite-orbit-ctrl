@@ -1,8 +1,8 @@
 % Parameters
 M = 5.98e24         % kg
 m = 100             % kg
-R = 6371e3          % km 
-r = 300e3           % km
+R = 6371e3          % m 
+r = 300e3           % m
 G = 6.673e-11       % m^3 / kg / s^2
 r_vector = R + r
 k = G*M
