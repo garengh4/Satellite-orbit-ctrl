@@ -1,4 +1,4 @@
-% Parameters
+%% Parameters
 M = 5.98e24         % kg
 m = 100             % kg
 R = 6371e3          % m 
@@ -8,7 +8,7 @@ r_vector = R + r
 k = G*M
 w = sqrt(k/(r_vector^3))
 
-% State space model 
+%% State space model 
 % where x1= r, x2=theta, x3=r', x4=theta';
 A = [0, 0, 1, 0;
      0, 0, 0, 1;
@@ -26,21 +26,37 @@ t = 0:1:500;
 x0 = [R+r 0 0 0]';
 orbitsys = ss(A,B,C,D)
 
-%step response
+%% step and impulse response
 step(orbitsys) %2 inputs, 1 output
-
-%impluse response
 impulse(orbitsys)
 
-%linear simulation for a given input
-%u = square(0.1*t) *0;  % input = 0; thetha starts dropping
-u = ones(size(t)) *pi % input = 1 and scaled to pi 
-u = [u ;u]';
+%% linear simulation for a given input
+%u = square(0.1*t)*0;  % input = 0; thetha starts dropping
+u = ones(size(t))*pi   % input = 1 and scaled to pi 
+u = [u;u]';
 [y,t,x] = lsim(orbitsys, u, t, x0)
 plot(t,y) %theta (-ive input gives +ive direction)
 xlabel('time'); ylabel('theta');title('Satellite orbit angle');
 plot(t,x)
 xlabel('time');ylabel('Altitude');title('Satellite orbit altitude');
-%plot the 4 different states in 4 graph
-
+% maybe plot the 4 different states in 4 graph??
 %lsim(orbitsys, u, t, x0)
+
+%% controllability
+P = ctrb(A,B)
+nc = rank(P)
+%rank(P) has to be at least n, for controllability!
+if rank(P) >= length(A)
+    disp('P is full rank. The system is controlable!');
+else
+    disp('The system is uncontrolable!');
+end
+
+%% Observability
+Q = obsv(A,C)
+no = rank(Q)
+
+%% Stability
+Q_lyap = eye(size(A))
+eigvalues = eig(A)
+P_lyap = lyap(A',Q_lyap)
